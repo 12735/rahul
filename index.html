@@ -3,59 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Poetry Garden</title>
+    <title>Chess Strategy Guide</title>
     <style>
+        /* General Site Styles */
         body {
-            background-color: #fcf9f2; /* Soft, warm background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
             color: #333;
-            font-family: 'Georgia', serif;
-            text-align: center;
-            padding: 50px 20px;
         }
+
+        /* Navigation Bar */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        nav a {
+            color: #d1d5db;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: white;
+        }
+
+        /* Hero / Welcome Section */
         .hero {
-            margin-bottom: 50px;
+            background-color: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            border-bottom: 5px solid #4a5568;
         }
-        h1 {
-            font-size: 2.5rem;
-            color: #5c3a21;
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
         }
-        .poem-card {
+        .hero p {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+
+        /* Strategy Cards Grid */
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .card {
             background: white;
-            border: 1px solid #eadbc8;
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            padding: 2rem;
+            border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid #3182ce;
         }
-        .footer {
-            margin-top: 50px;
-            font-size: 0.9rem;
-            color: #777;
+        .card.dark-theme {
+            border-top-color: #1a1a1a;
+            background-color: #fafafa;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .card ul {
+            line-height: 1.8;
+            padding-left: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
 
+    <!-- Navigation Menu -->
+    <header>
+        <div class="logo">♚ Chess Vault</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Openings</a>
+            <a href="#">Puzzles</a>
+        </nav>
+    </header>
+
+    <!-- Main Title Area -->
     <div class="hero">
-        <div>🌹🌹🌹</div>
-        <h1>Echoes of the Soul</h1>
-        <p>A garden where every feeling becomes a poem.</p>
+        <h1>Master the Board</h1>
+        <p>Your personal guide to openings, tactics, and endgame brilliance.</p>
     </div>
 
-    <div class="poem-card">
-        <h2>The First Leaf</h2>
-        <p>
-            The wind blows soft,<br>
-            The leaves fall light,<br>
-            A quiet thought,<br>
-            In the fading night.
-        </p>
+    <!-- Content Sections -->
+    <div class="container">
+        
+        <div class="card dark-theme">
+            <h2>The Black Pieces: Counter-Attack</h2>
+            <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
+            <ul>
+                <li><strong>The Sicilian Defense:</strong> Fighting for the center aggressively.</li>
+                <li><strong>The King's Indian Defense:</strong> Solid structure for middle-game strikes.</li>
+                <li><strong>Responses to d4:</strong> Keeping the position dynamic.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Tactical Vision</h2>
+            <p>Sharpening your ability to spot winning patterns on the board.</p>
+            <ul>
+                <li><strong>Pins & Skewers:</strong> Trapping high-value pieces.</li>
+                <li><strong>Forks:</strong> Attacking two targets simultaneously.</li>
+                <li><strong>Endgame Calculations:</strong> Pawn promotion races.</li>
+            </ul>
+        </div>
+
     </div>
 
-    <div class="footer">
-        ✦ Made by [Rahul Mandal] ✦
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>✦ Designed for the love of the game ✦</p>
+    </footer>
 
 </body>
 </html>
