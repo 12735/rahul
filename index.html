@@ -320,7 +320,6 @@
         .chess-square.light { background: #ebecd0; color: #111; }
         .chess-square.dark { background: #739552; color: #111; }
         .chess-square.selected { background: #baca44 !important; }
-        .chess-square.highlight { background: rgba(244, 208, 63, 0.6) !important; }
 
         .side-panel {
             flex: 1;
@@ -647,7 +646,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>✦ DESIGNED FOR YASH HAROD ✦</p>
+        <p>✦ DESIGNED FOR MRBADSHAH ✦</p>
     </footer>
 
     <!-- JavaScript for Interactions & Full Chess Engine -->
@@ -683,7 +682,7 @@
 
         /* --- 3. REAL CHESS.COM STYLE ENGINE --- */
         let realSelectedSq = null;
-        let realTurn = 'player'; // 'player' (White) or 'bot' (Black)
+        let realTurn = 'player'; 
         let realBoard = [
             ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
             ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
@@ -722,7 +721,6 @@
             if (realTurn !== 'player') return;
 
             const piece = realBoard[r][c];
-            // White pieces check
             const isWhitePiece = ['♙','♖','♘','♗','♕','♔'].includes(piece);
 
             if (isWhitePiece) {
@@ -732,20 +730,16 @@
                 return;
             }
 
-            // If a piece is selected and clicked on an empty or valid target
             if (realSelectedSq) {
                 const startR = realSelectedSq.r;
                 const startC = realSelectedSq.c;
                 const movingPiece = realBoard[startR][startC];
 
-                // Simple validation rules for beginner demo
                 let isValid = false;
                 if (movingPiece === '♙') {
-                    // Pawn moves forward 1 or captures diagonally 1
                     if (c === startC && r === startR - 1 && realBoard[r][c] === '') isValid = true;
                     if (Math.abs(c - startC) === 1 && r === startR - 1 && realBoard[r][c] !== '') isValid = true;
                 } else {
-                    // Allow generic movement for demo simplicity
                     if (r !== startR || c !== startC) isValid = true;
                 }
 
@@ -765,7 +759,6 @@
         }
 
         function botMove() {
-            // Simple bot logic: finds a black pawn or piece and pushes forward
             let moved = false;
             for (let r = 7; r >= 0; r--) {
                 for (let c = 0; c < 8; c++) {
