@@ -18,7 +18,7 @@
             cursor: none;
         }
 
-        /* --- ADVANCED CUSTOM CURSOR --- */
+        /* --- BUTTERY SMOOTH CUSTOM CURSOR --- */
         .cursor-dot {
             width: 8px;
             height: 8px;
@@ -46,7 +46,7 @@
             transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        /* --- SMOOTH MOUSE HOVER TRAIL PARTICLES --- */
+        /* --- FLUID MOUSE TRAIL PARTICLES --- */
         .trail-particle {
             position: fixed;
             width: 5px;
@@ -379,7 +379,7 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions & Smooth Animations -->
+    <!-- JavaScript for Interactions & Butter-Smooth Animations -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -404,7 +404,6 @@
             const tabs = document.querySelectorAll('.tab-section');
             const links = document.querySelectorAll('nav a');
 
-            // Fade out current active tab smoothly
             tabs.forEach(tab => {
                 if(tab.classList.contains('active')) {
                     tab.classList.remove('active');
@@ -414,7 +413,6 @@
             links.forEach(link => link.classList.remove('active-link'));
             element.classList.add('active-link');
 
-            // Delay showing the new tab slightly to let the fade out finish smoothly
             setTimeout(() => {
                 tabs.forEach(tab => tab.style.display = 'none');
                 const targetTab = document.getElementById(tabId);
@@ -427,31 +425,44 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 3. SMOOTH CUSTOM CURSOR, TRAIL & CLICK BURST LOGIC --- */
+        /* --- 3. BUTTERY SMOOTH LERP CURSOR & TRAIL LOGIC --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        let outlineX = 0;
+        let outlineY = 0;
         let lastTrailTime = 0;
         
         window.addEventListener('mousemove', function(e) {
-            const posX = e.clientX;
-            const posY = e.clientY;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
             
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            
-            // Slower, weighted lag for smooth aesthetic trailing ring
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 300, fill: "forwards" });
+            // Move dot instantly for zero-latency feel
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
 
             // Spawn soft trailing particles smoothly
             const now = Date.now();
-            if (now - lastTrailTime > 40) {
-                createTrailParticle(posX, posY);
+            if (now - lastTrailTime > 35) {
+                createTrailParticle(mouseX, mouseY);
                 lastTrailTime = now;
             }
         });
+
+        // High-performance smooth animation loop (Lerp physics)
+        function renderCursor() {
+            // The closer the factor (0.15), the smoother and weightier the glide feels
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            
+            cursorOutline.style.left = `${outlineX}px`;
+            cursorOutline.style.top = `${outlineY}px`;
+            
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
 
         function createTrailParticle(x, y) {
             const particle = document.createElement('div');
@@ -462,10 +473,10 @@
             particle.style.top = `${y}px`;
 
             const animation = particle.animate([
-                { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.6 },
-                { transform: 'translate(-50%, -50%) scale(0.1) translateY(18px)', opacity: 0 }
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.5 },
+                { transform: 'translate(-50%, -50%) scale(0.05) translateY(20px)', opacity: 0 }
             ], {
-                duration: 800, // Slower, smoother fade out
+                duration: 900,
                 easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
             });
 
@@ -499,7 +510,7 @@
                     { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
                     { transform: `translate(calc(-50% + ${Math.cos(angle)*speed}px), calc(-50% + ${Math.sin(angle)*speed}px)) scale(0)`, opacity: 0 }
                 ], {
-                    duration: 800, // Slower, smoother expansion
+                    duration: 800,
                     easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
                 });
 
