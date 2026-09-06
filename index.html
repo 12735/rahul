@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Strategy Guide</title>
     
-    <!-- Importing a clean, modern aesthetic font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
@@ -13,9 +12,38 @@
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            background-color: #000000; /* Pure black background for max aesthetic */
-            color: #ffffff; /* Crisp white text */
+            background-color: #000000; 
+            color: #ffffff; 
             overflow-x: hidden;
+            cursor: none; /* Hides the default mouse cursor */
+        }
+
+        /* --- CUSTOM AESTHETIC CURSOR --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Allows you to click through it */
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
 
         /* Rain Particle System */
@@ -37,12 +65,10 @@
             animation: fall linear infinite;
         }
         @keyframes fall {
-            to {
-                transform: translateY(110vh);
-            }
+            to { transform: translateY(110vh); }
         }
 
-        /* Navigation Bar (Glass effect) */
+        /* Navigation Bar */
         header {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
@@ -71,16 +97,30 @@
             font-weight: 600;
             letter-spacing: 1px;
             transition: all 0.3s ease;
+            cursor: none; /* Required so hover doesn't bring default cursor back */
         }
-        nav a:hover {
+        nav a:hover, nav a.active-link {
             color: #ffffff;
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        /* Hero / Welcome Section */
+        /* TAB SYSTEM STYLES */
+        .tab-section {
+            display: none; /* Hides all sections by default */
+            animation: fadeIn 0.5s ease;
+        }
+        .tab-section.active {
+            display: block; /* Shows the active section */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Area (Inside Home Tab) */
         .hero {
             text-align: center;
-            padding: 6rem 1rem 4rem 1rem;
+            padding: 8rem 1rem;
             position: relative;
             z-index: 1;
         }
@@ -88,7 +128,7 @@
             font-size: 4rem;
             margin-bottom: 0.5rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #ffffff, #555555);
+            background: linear-gradient(45deg, #4facfe, #00f2fe); /* Changed to a cool neon blue */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
@@ -102,7 +142,7 @@
             margin: 0 auto;
         }
 
-        /* Glassmorphism Strategy Cards Grid */
+        /* Glassmorphism Cards Grid */
         .container {
             max-width: 1100px;
             margin: 2rem auto;
@@ -167,82 +207,117 @@
             z-index: 1;
         }
         
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+            .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            body { cursor: auto; } /* Turn off custom cursor on mobile */
+            .cursor-dot, .cursor-outline { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Rain overlay container -->
+    <!-- Aesthetic Cursor Elements -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Rain overlay -->
     <div class="rain-container"></div>
 
     <!-- Navigation Menu -->
     <header>
         <div class="logo">♚ CHESS VAULT</div>
         <nav>
-            <a href="#">HOME</a>
-            <a href="#">OPENINGS</a>
-            <a href="#">PUZZLES</a>
+            <a href="#" onclick="openTab('home', this)" class="active-link">HOME</a>
+            <a href="#" onclick="openTab('openings', this)">OPENINGS</a>
+            <a href="#" onclick="openTab('puzzles', this)">PUZZLES</a>
         </nav>
     </header>
 
-    <!-- Main Title Area -->
-    <div class="hero">
-        <h1>Master the Board</h1>
-        <p>Your personal guide to openings, tactics, and endgame brilliance.</p>
+    <!-- =============================== -->
+    <!-- TAB 1: HOME PAGE                -->
+    <!-- =============================== -->
+    <div id="home" class="tab-section active">
+        <div class="hero">
+            <h1>Master the Board</h1>
+            <p>Your personal guide to openings, tactics, and endgame brilliance. Select a category above to begin.</p>
+        </div>
     </div>
 
-    <!-- Content Sections -->
-    <div class="container">
-        
-        <div class="card">
-            <h2>The Black Pieces: Counter-Attack</h2>
-            <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
-            <ul>
-                <li><strong>The Sicilian Defense:</strong> Fighting for the center aggressively.</li>
-                <li><strong>The King's Indian Defense:</strong> Solid structure for middle-game strikes.</li>
-                <li><strong>Responses to d4:</strong> Keeping the position dynamic.</li>
-            </ul>
-        </div>
+    <!-- =============================== -->
+    <!-- TAB 2: OPENINGS                 -->
+    <!-- =============================== -->
+    <div id="openings" class="tab-section">
+        <br><br> <!-- Spacing -->
+        <div class="container">
+            <div class="card">
+                <h2>The Black Pieces: Counter-Attack</h2>
+                <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
+                <ul>
+                    <li><strong>The Sicilian Defense:</strong> Fighting for the center aggressively.</li>
+                    <li><strong>The King's Indian Defense:</strong> Solid structure for middle-game strikes.</li>
+                    <li><strong>Responses to d4:</strong> Keeping the position dynamic.</li>
+                </ul>
+            </div>
 
-        <div class="card">
-            <h2>Advanced Defenses</h2>
-            <p>Expanding your repertoire to counter aggressive opening plays.</p>
-            <ul>
-                <li><strong>The Caro-Kann Defense:</strong> Highly solid, focusing on an unbreakable pawn structure.</li>
-                <li><strong>The French Defense:</strong> A sharp counter-attack that invites overextension.</li>
-                <li><strong>The Scandinavian Defense:</strong> Striking the center immediately.</li>
-                <li><strong>The Nimzo-Indian Defense:</strong> Rapid development to pin early threats.</li>
-            </ul>
-        </div>
+            <div class="card">
+                <h2>Advanced Defenses</h2>
+                <p>Expanding your repertoire to counter aggressive opening plays.</p>
+                <ul>
+                    <li><strong>The Caro-Kann Defense:</strong> Highly solid, focusing on an unbreakable pawn structure.</li>
+                    <li><strong>The French Defense:</strong> A sharp counter-attack that invites overextension.</li>
+                    <li><strong>The Scandinavian Defense:</strong> Striking the center immediately.</li>
+                </ul>
+            </div>
 
-        <div class="card">
-            <h2>Classic Openings for White</h2>
-            <p>Foundational strategies for taking control from the very first move.</p>
-            <ul>
-                <li><strong>The Italian Game:</strong> A classic, aggressive opening aiming directly at the f7 square.</li>
-                <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for central control.</li>
-                <li><strong>The Ruy Lopez:</strong> An ancient opening applying long-term positional pressure.</li>
-            </ul>
-        </div>
+            <div class="card">
+                <h2>Classic Openings for White</h2>
+                <p>Foundational strategies for taking control from the very first move.</p>
+                <ul>
+                    <li><strong>The Italian Game:</strong> A classic, aggressive opening aiming directly at the f7 square.</li>
+                    <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for central control.</li>
+                    <li><strong>The Ruy Lopez:</strong> An ancient opening applying long-term positional pressure.</li>
+                </ul>
+            </div>
 
-        <div class="card">
-            <h2>Aggressive Gambits & Traps</h2>
-            <p>Catching opponents off guard with sharp, tactical lines.</p>
-            <ul>
-                <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to hunt the King.</li>
-                <li><strong>The Stafford Gambit:</strong> A tricky line that can overwhelm the unprepared.</li>
-                <li><strong>The Légal Trap:</strong> A beautiful sequence involving a shocking Queen sacrifice.</li>
-            </ul>
+            <div class="card">
+                <h2>Aggressive Gambits & Traps</h2>
+                <p>Catching opponents off guard with sharp, tactical lines.</p>
+                <ul>
+                    <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to hunt the King.</li>
+                    <li><strong>The Stafford Gambit:</strong> A tricky line that can overwhelm the unprepared.</li>
+                    <li><strong>The Légal Trap:</strong> A beautiful sequence involving a shocking Queen sacrifice.</li>
+                </ul>
+            </div>
         </div>
+    </div>
 
+    <!-- =============================== -->
+    <!-- TAB 3: PUZZLES                  -->
+    <!-- =============================== -->
+    <div id="puzzles" class="tab-section">
+        <br><br>
+        <div class="container">
+            <div class="card">
+                <h2>Tactical Vision</h2>
+                <p>Sharpening your ability to spot winning patterns on the board.</p>
+                <ul>
+                    <li><strong>Pins & Skewers:</strong> Trapping high-value pieces behind weaker ones.</li>
+                    <li><strong>Forks:</strong> Using a single piece (often a Knight) to attack two targets simultaneously.</li>
+                    <li><strong>Discovered Attacks:</strong> Moving a piece to unveil an attack from a Rook or Bishop behind it.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Endgame Calculations</h2>
+                <p>When the board clears, precision is everything.</p>
+                <ul>
+                    <li><strong>The Rule of the Square:</strong> Calculating if your King can catch a runaway pawn.</li>
+                    <li><strong>Opposition:</strong> Forcing the enemy King to step aside.</li>
+                    <li><strong>Lucena Position:</strong> The essential bridge-building technique for Rook endgames.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -250,29 +325,74 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Rain Effect -->
+    <!-- JavaScript for Interactions -->
     <script>
+        /* --- 1. RAIN EFFECT --- */
         function createRain() {
             const rainContainer = document.querySelector('.rain-container');
             const dropCount = 75; 
-            
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('drop');
-                
                 const leftPosition = Math.random() * 100;
                 const fallDuration = Math.random() * 1.5 + 0.8; 
                 const startDelay = Math.random() * 2; 
-                
                 drop.style.left = leftPosition + 'vw';
                 drop.style.animationDuration = fallDuration + 's';
                 drop.style.animationDelay = startDelay + 's';
-                
                 rainContainer.appendChild(drop);
             }
         }
-
         document.addEventListener('DOMContentLoaded', createRain);
+
+        /* --- 2. TAB SWITCHING LOGIC --- */
+        function openTab(tabId, element) {
+            // Hide all tab sections
+            const tabs = document.querySelectorAll('.tab-section');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all links
+            const links = document.querySelectorAll('nav a');
+            links.forEach(link => link.classList.remove('active-link'));
+
+            // Show the clicked tab and highlight the link
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active-link');
+        }
+
+        /* --- 3. CUSTOM CURSOR LOGIC --- */
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        window.addEventListener('mousemove', function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            // Move dot instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Move outline with a tiny delay for smoothness
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 150, fill: "forwards" });
+        });
+
+        // Make cursor expand when hovering over links
+        const clickableLinks = document.querySelectorAll('a');
+        clickableLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
     </script>
 </body>
 </html>
