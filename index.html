@@ -43,22 +43,22 @@
             pointer-events: none;
             z-index: 10001;
             transform: translate(-50%, -50%);
-            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        /* --- MOUSE HOVER TRAIL PARTICLES --- */
+        /* --- SMOOTH MOUSE HOVER TRAIL PARTICLES --- */
         .trail-particle {
             position: fixed;
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             background: #00f2fe;
             border-radius: 50%;
             pointer-events: none;
             z-index: 10000;
-            box-shadow: 0 0 6px #00f2fe;
+            box-shadow: 0 0 8px #00f2fe;
         }
 
-        /* --- CLICK EXPLOSION PARTICLES --- */
+        /* --- SMOOTH CLICK EXPLOSION PARTICLES --- */
         .click-particle {
             position: fixed;
             width: 6px;
@@ -128,17 +128,17 @@
             text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
         }
 
-        /* TAB SYSTEM STYLES */
+        /* SMOOTH TAB SYSTEM ANIMATIONS */
         .tab-section {
             display: none;
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         .tab-section.active {
             display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- AESTHETIC UPPER TEXT / HERO BOX --- */
@@ -161,7 +161,7 @@
             text-transform: uppercase;
             margin-bottom: 1.5rem;
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
-            animation: pulseGlow 3s infinite ease-in-out;
+            animation: pulseGlow 4s infinite ease-in-out;
         }
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.15); }
@@ -205,7 +205,7 @@
             border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border 0.4s ease;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border 0.5s ease;
         }
         .card:hover {
             transform: translateY(-8px);
@@ -379,7 +379,7 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions & Effects -->
+    <!-- JavaScript for Interactions & Smooth Animations -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -399,20 +399,35 @@
         }
         document.addEventListener('DOMContentLoaded', createRain);
 
-        /* --- 2. TAB SWITCHING LOGIC --- */
+        /* --- 2. SMOOTH TAB SWITCHING LOGIC --- */
         function openTab(tabId, element) {
             const tabs = document.querySelectorAll('.tab-section');
-            tabs.forEach(tab => tab.classList.remove('active'));
-
             const links = document.querySelectorAll('nav a');
-            links.forEach(link => link.classList.remove('active-link'));
 
-            document.getElementById(tabId).classList.add('active');
+            // Fade out current active tab smoothly
+            tabs.forEach(tab => {
+                if(tab.classList.contains('active')) {
+                    tab.classList.remove('active');
+                }
+            });
+
+            links.forEach(link => link.classList.remove('active-link'));
             element.classList.add('active-link');
+
+            // Delay showing the new tab slightly to let the fade out finish smoothly
+            setTimeout(() => {
+                tabs.forEach(tab => tab.style.display = 'none');
+                const targetTab = document.getElementById(tabId);
+                targetTab.style.display = 'block';
+                setTimeout(() => {
+                    targetTab.classList.add('active');
+                }, 50);
+            }, 300);
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 3. CUSTOM CURSOR, TRAIL & CLICK BURST LOGIC --- */
+        /* --- 3. SMOOTH CUSTOM CURSOR, TRAIL & CLICK BURST LOGIC --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
         let lastTrailTime = 0;
@@ -424,14 +439,15 @@
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
             
+            // Slower, weighted lag for smooth aesthetic trailing ring
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
-            }, { duration: 120, fill: "forwards" });
+            }, { duration: 300, fill: "forwards" });
 
-            // Spawn mouse hover trail particles smoothly
+            // Spawn soft trailing particles smoothly
             const now = Date.now();
-            if (now - lastTrailTime > 25) {
+            if (now - lastTrailTime > 40) {
                 createTrailParticle(posX, posY);
                 lastTrailTime = now;
             }
@@ -446,35 +462,35 @@
             particle.style.top = `${y}px`;
 
             const animation = particle.animate([
-                { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.8 },
-                { transform: 'translate(-50%, -50%) scale(0.2) translateY(12px)', opacity: 0 }
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.6 },
+                { transform: 'translate(-50%, -50%) scale(0.1) translateY(18px)', opacity: 0 }
             ], {
-                duration: 400,
-                easing: 'ease-out'
+                duration: 800, // Slower, smoother fade out
+                easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
             });
 
             animation.onfinish = () => particle.remove();
         }
 
-        // Click explosion particle effect anywhere on the page
+        // Gentle click wave animation
         window.addEventListener('click', function(e) {
             createClickBurst(e.clientX, e.clientY);
             
-            cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.7)';
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.6)';
             setTimeout(() => {
                 cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 150);
+            }, 300);
         });
 
         function createClickBurst(x, y) {
-            const particleCount = 14;
+            const particleCount = 12;
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('click-particle');
                 document.body.appendChild(particle);
 
                 const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 70 + 20;
+                const speed = Math.random() * 50 + 15;
 
                 particle.style.left = `${x}px`;
                 particle.style.top = `${y}px`;
@@ -483,22 +499,22 @@
                     { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
                     { transform: `translate(calc(-50% + ${Math.cos(angle)*speed}px), calc(-50% + ${Math.sin(angle)*speed}px)) scale(0)`, opacity: 0 }
                 ], {
-                    duration: 550,
-                    easing: 'cubic-bezier(0, .9, .57, 1)'
+                    duration: 800, // Slower, smoother expansion
+                    easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
                 });
 
                 animation.onfinish = () => particle.remove();
             }
         }
 
-        // Hover effect enlarges cursor outline over links/cards
+        // Hover effect for links/cards
         const interactiveElements = document.querySelectorAll('a, .card');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursorOutline.style.width = '55px';
                 cursorOutline.style.height = '55px';
                 cursorOutline.style.borderColor = '#00f2fe';
-                cursorOutline.style.backgroundColor = 'rgba(0, 242, 254, 0.05)';
+                cursorOutline.style.backgroundColor = 'rgba(0, 242, 254, 0.04)';
             });
             el.addEventListener('mouseleave', () => {
                 cursorOutline.style.width = '36px';
