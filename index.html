@@ -15,35 +15,47 @@
             background-color: #000000; 
             color: #ffffff; 
             overflow-x: hidden;
-            cursor: none; /* Hides the default mouse cursor */
+            cursor: none; /* Hides default cursor */
         }
 
-        /* --- CUSTOM AESTHETIC CURSOR --- */
+        /* --- ADVANCED CUSTOM CURSOR --- */
         .cursor-dot {
             width: 8px;
             height: 8px;
-            background-color: white;
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none; /* Allows you to click through it */
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: #00f2fe;
             border-radius: 50%;
             position: fixed;
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 10002;
             transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            box-shadow: 0 0 12px #00f2fe;
+        }
+        .cursor-outline {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid rgba(0, 242, 254, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10001;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        /* --- CLICK EXPLOSION PARTICLES --- */
+        .click-particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #00f2fe;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10003;
+            box-shadow: 0 0 10px #00f2fe, 0 0 20px #4facfe;
         }
 
         /* Rain Particle System */
@@ -61,7 +73,7 @@
             top: -50px;
             width: 1px;
             height: 50px;
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4));
+            background: linear-gradient(to bottom, transparent, rgba(0, 242, 254, 0.3));
             animation: fall linear infinite;
         }
         @keyframes fall {
@@ -70,9 +82,9 @@
 
         /* Navigation Bar */
         header {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             color: white;
             padding: 1.2rem 3rem;
             display: flex;
@@ -86,7 +98,7 @@
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 2px;
-            background: linear-gradient(90deg, #ffffff, #888888);
+            background: linear-gradient(90deg, #ffffff, #00f2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -97,49 +109,70 @@
             font-weight: 600;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            cursor: none; /* Required so hover doesn't bring default cursor back */
+            cursor: none;
         }
         nav a:hover, nav a.active-link {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            color: #00f2fe;
+            text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
         }
 
         /* TAB SYSTEM STYLES */
         .tab-section {
-            display: none; /* Hides all sections by default */
-            animation: fadeIn 0.5s ease;
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .tab-section.active {
-            display: block; /* Shows the active section */
+            display: block;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hero Area (Inside Home Tab) */
+        /* --- AESTHETIC UPPER TEXT / HERO BOX --- */
         .hero {
             text-align: center;
-            padding: 8rem 1rem;
+            padding: 7rem 1rem 4rem 1rem;
             position: relative;
             z-index: 1;
         }
+        .aesthetic-badge {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 50px;
+            color: #00f2fe;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.15); }
+            50% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.35); }
+        }
         .hero h1 {
             font-size: 4rem;
-            margin-bottom: 0.5rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
             font-weight: 800;
-            background: linear-gradient(45deg, #4facfe, #00f2fe); /* Changed to a cool neon blue */
+            background: linear-gradient(135deg, #ffffff 30%, #4facfe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: #a0a0a0;
             font-weight: 300;
             max-width: 600px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
         /* Glassmorphism Cards Grid */
@@ -154,30 +187,31 @@
             z-index: 1;
         }
         .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(14px);
             padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border 0.4s ease;
         }
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.3);
         }
         .card h2 {
             margin-top: 0;
             color: #ffffff;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             padding-bottom: 0.8rem;
             margin-bottom: 1.2rem;
+            letter-spacing: 0.5px;
         }
         .card p {
-            color: #cccccc;
+            color: #bbbbbb;
             font-size: 0.95rem;
             font-weight: 300;
             margin-bottom: 1.5rem;
@@ -185,7 +219,7 @@
         .card ul {
             line-height: 2;
             padding-left: 1.2rem;
-            color: #bbbbbb;
+            color: #aaaaaa;
             font-weight: 300;
             font-size: 0.95rem;
         }
@@ -198,26 +232,27 @@
         footer {
             text-align: center;
             padding: 3rem;
-            color: #555555;
-            margin-top: 4rem;
+            color: #444444;
+            margin-top: 5rem;
             font-weight: 300;
-            letter-spacing: 2px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            letter-spacing: 3px;
+            border-top: 1px solid rgba(255,255,255,0.04);
             position: relative;
             z-index: 1;
+            font-size: 0.85rem;
         }
         
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
             .hero h1 { font-size: 2.5rem; }
-            body { cursor: auto; } /* Turn off custom cursor on mobile */
+            body { cursor: auto; }
             .cursor-dot, .cursor-outline { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Aesthetic Cursor Elements -->
+    <!-- Custom Cursor Elements -->
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
@@ -239,8 +274,9 @@
     <!-- =============================== -->
     <div id="home" class="tab-section active">
         <div class="hero">
+            <div class="aesthetic-badge">✦ Strategic Masterclass ✦</div>
             <h1>Master the Board</h1>
-            <p>Your personal guide to openings, tactics, and endgame brilliance. Select a category above to begin.</p>
+            <p>Your ultimate digital sanctuary for elite openings, sharp tactics, and endgame mastery. Choose a section above to begin your journey.</p>
         </div>
     </div>
 
@@ -248,7 +284,10 @@
     <!-- TAB 2: OPENINGS                 -->
     <!-- =============================== -->
     <div id="openings" class="tab-section">
-        <br><br> <!-- Spacing -->
+        <div class="hero" style="padding-bottom: 1rem;">
+            <div class="aesthetic-badge">Opening Repertoire</div>
+            <h1>The Battle Lines</h1>
+        </div>
         <div class="container">
             <div class="card">
                 <h2>The Black Pieces: Counter-Attack</h2>
@@ -296,21 +335,24 @@
     <!-- TAB 3: PUZZLES                  -->
     <!-- =============================== -->
     <div id="puzzles" class="tab-section">
-        <br><br>
+        <div class="hero" style="padding-bottom: 1rem;">
+            <div class="aesthetic-badge">Tactical Vision</div>
+            <h1>Calculate & Conquer</h1>
+        </div>
         <div class="container">
             <div class="card">
-                <h2>Tactical Vision</h2>
-                <p>Sharpening your ability to spot winning patterns on the board.</p>
+                <h2>Tactical Patterns</h2>
+                <p>Sharpening your ability to spot hidden winning patterns on the board.</p>
                 <ul>
                     <li><strong>Pins & Skewers:</strong> Trapping high-value pieces behind weaker ones.</li>
                     <li><strong>Forks:</strong> Using a single piece (often a Knight) to attack two targets simultaneously.</li>
-                    <li><strong>Discovered Attacks:</strong> Moving a piece to unveil an attack from a Rook or Bishop behind it.</li>
+                    <li><strong>Discovered Attacks:</strong> Moving a piece to unveil a devastating strike from behind.</li>
                 </ul>
             </div>
 
             <div class="card">
                 <h2>Endgame Calculations</h2>
-                <p>When the board clears, precision is everything.</p>
+                <p>When the board clears, absolute mathematical precision is everything.</p>
                 <ul>
                     <li><strong>The Rule of the Square:</strong> Calculating if your King can catch a runaway pawn.</li>
                     <li><strong>Opposition:</strong> Forcing the enemy King to step aside.</li>
@@ -325,12 +367,12 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions -->
+    <!-- JavaScript for Interactions & Effects -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
             const rainContainer = document.querySelector('.rain-container');
-            const dropCount = 75; 
+            const dropCount = 60; 
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('drop');
@@ -347,20 +389,18 @@
 
         /* --- 2. TAB SWITCHING LOGIC --- */
         function openTab(tabId, element) {
-            // Hide all tab sections
             const tabs = document.querySelectorAll('.tab-section');
             tabs.forEach(tab => tab.classList.remove('active'));
 
-            // Remove active class from all links
             const links = document.querySelectorAll('nav a');
             links.forEach(link => link.classList.remove('active-link'));
 
-            // Show the clicked tab and highlight the link
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active-link');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 3. CUSTOM CURSOR LOGIC --- */
+        /* --- 3. CUSTOM CURSOR & CLICK BURST LOGIC --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
         
@@ -368,28 +408,66 @@
             const posX = e.clientX;
             const posY = e.clientY;
             
-            // Move dot instantly
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
             
-            // Move outline with a tiny delay for smoothness
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
-            }, { duration: 150, fill: "forwards" });
+            }, { duration: 120, fill: "forwards" });
         });
 
-        // Make cursor expand when hovering over links
-        const clickableLinks = document.querySelectorAll('a');
-        clickableLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                cursorOutline.style.width = '60px';
-                cursorOutline.style.height = '60px';
-                cursorOutline.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        // Click explosion particle effect anywhere on the page
+        window.addEventListener('click', function(e) {
+            createClickBurst(e.clientX, e.clientY);
+            
+            // Pulse the cursor outline on click
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.7)';
+            setTimeout(() => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 150);
+        });
+
+        function createClickBurst(x, y) {
+            const particleCount = 14;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('click-particle');
+                document.body.appendChild(particle);
+
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 70 + 20;
+                const destinationX = x + Math.cos(angle) * speed;
+                const destinationY = y + Math.sin(angle) * speed;
+
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+
+                const animation = particle.animate([
+                    { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${Math.cos(angle)*speed}px), calc(-50% + ${Math.sin(angle)*speed}px)) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 550,
+                    easing: 'cubic-bezier(0, .9, .57, 1)'
+                });
+
+                animation.onfinish = () => particle.remove();
+            }
+        }
+
+        // Hover effect enlarges cursor outline over links/cards
+        const interactiveElements = document.querySelectorAll('a, .card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '55px';
+                cursorOutline.style.height = '55px';
+                cursorOutline.style.borderColor = '#00f2fe';
+                cursorOutline.style.backgroundColor = 'rgba(0, 242, 254, 0.05)';
             });
-            link.addEventListener('mouseleave', () => {
-                cursorOutline.style.width = '40px';
-                cursorOutline.style.height = '40px';
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '36px';
+                cursorOutline.style.height = '36px';
+                cursorOutline.style.borderColor = 'rgba(0, 242, 254, 0.5)';
                 cursorOutline.style.backgroundColor = 'transparent';
             });
         });
