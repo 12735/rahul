@@ -15,7 +15,7 @@
             background-color: #000000; 
             color: #ffffff; 
             overflow-x: hidden;
-            cursor: none; /* Hides default cursor */
+            cursor: none;
         }
 
         /* --- ADVANCED CUSTOM CURSOR --- */
@@ -44,6 +44,18 @@
             z-index: 10001;
             transform: translate(-50%, -50%);
             transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        /* --- MOUSE HOVER TRAIL PARTICLES --- */
+        .trail-particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #00f2fe;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            box-shadow: 0 0 6px #00f2fe;
         }
 
         /* --- CLICK EXPLOSION PARTICLES --- */
@@ -400,9 +412,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 3. CUSTOM CURSOR & CLICK BURST LOGIC --- */
+        /* --- 3. CUSTOM CURSOR, TRAIL & CLICK BURST LOGIC --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
+        let lastTrailTime = 0;
         
         window.addEventListener('mousemove', function(e) {
             const posX = e.clientX;
@@ -415,13 +428,38 @@
                 left: `${posX}px`,
                 top: `${posY}px`
             }, { duration: 120, fill: "forwards" });
+
+            // Spawn mouse hover trail particles smoothly
+            const now = Date.now();
+            if (now - lastTrailTime > 25) {
+                createTrailParticle(posX, posY);
+                lastTrailTime = now;
+            }
         });
+
+        function createTrailParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('trail-particle');
+            document.body.appendChild(particle);
+
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+
+            const animation = particle.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 0.8 },
+                { transform: 'translate(-50%, -50%) scale(0.2) translateY(12px)', opacity: 0 }
+            ], {
+                duration: 400,
+                easing: 'ease-out'
+            });
+
+            animation.onfinish = () => particle.remove();
+        }
 
         // Click explosion particle effect anywhere on the page
         window.addEventListener('click', function(e) {
             createClickBurst(e.clientX, e.clientY);
             
-            // Pulse the cursor outline on click
             cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.7)';
             setTimeout(() => {
                 cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -437,8 +475,6 @@
 
                 const angle = Math.random() * Math.PI * 2;
                 const speed = Math.random() * 70 + 20;
-                const destinationX = x + Math.cos(angle) * speed;
-                const destinationY = y + Math.sin(angle) * speed;
 
                 particle.style.left = `${x}px`;
                 particle.style.top = `${y}px`;
