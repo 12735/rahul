@@ -216,7 +216,7 @@
             letter-spacing: 0.5px;
         }
         
-        /* Standard Card Body (For Openings/Puzzles) */
+        /* Reveal Hint */
         .reveal-hint {
             font-size: 0.75rem;
             color: #00f2fe;
@@ -246,124 +246,129 @@
             border-color: rgba(255, 255, 255, 0.2);
             color: #ffffff;
         }
-
-        /* --- LEGENDS SECTION SPECIFIC BUTTON & LAYOUT --- */
-        .play-btn {
-            font-size: 0.75rem;
-            color: #000;
-            background: #00f2fe;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            cursor: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-            white-space: nowrap;
+        .card-body p {
+            color: #bbbbbb;
+            font-size: 0.95rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
         }
-        .play-btn:hover {
-            background: #ffffff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            transform: scale(1.05);
+        .card-body ul {
+            line-height: 2;
+            padding-left: 1.2rem;
+            color: #aaaaaa;
+            font-weight: 300;
+            font-size: 0.95rem;
+            margin: 0;
         }
-        .legends-body {
-            margin-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 1.5rem;
-        }
-
-        /* --- MINI CHESS GAME STYLING --- */
-        .game-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 100000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeInModal 0.4s ease;
-        }
-        @keyframes fadeInModal {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .game-modal {
-            background: #0a0a0a;
-            border: 1px solid rgba(0, 242, 254, 0.4);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
-            max-width: 400px;
-            width: 90%;
-        }
-        .game-modal h3 {
-            margin-top: 0;
-            color: #00f2fe;
-            letter-spacing: 1px;
-        }
-        .fun-msg {
-            font-size: 0.85rem;
-            color: #ff9900;
-            background: rgba(255, 153, 0, 0.1);
-            border: 1px solid rgba(255, 153, 0, 0.3);
-            padding: 0.4rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        .coach-box {
-            font-size: 0.9rem;
+        .card-body ul strong {
             color: #ffffff;
-            background: rgba(0, 242, 254, 0.05);
-            border-left: 3px solid #00f2fe;
-            padding: 0.6rem;
-            margin-bottom: 1rem;
-            text-align: left;
-            border-radius: 0 8px 8px 0;
-            min-height: 45px;
+            font-weight: 600;
         }
-        .chess-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 1.5rem auto;
-            border: 2px solid #333;
-            border-radius: 6px;
+
+        /* --- CHESS.COM STYLE PLAY ARENA --- */
+        .arena-container {
+            max-width: 900px;
+            margin: 1rem auto 3rem auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chess-app-frame {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: row;
             overflow: hidden;
+            width: 100%;
+            max-width: 780px;
         }
-        .square {
+        @media (max-width: 768px) {
+            .chess-app-frame { flex-direction: column; align-items: center; }
+        }
+        .board-wrapper {
+            padding: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
+        }
+        .real-chess-board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 360px;
+            height: 360px;
+            border: 4px solid #1f2937;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        .chess-square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2rem;
             cursor: none;
             user-select: none;
             transition: background 0.2s;
         }
-        .square.light { background: #e0e0e0; color: #000; }
-        .square.dark { background: #4a5568; color: #fff; }
-        .square.selected { background: #00f2fe !important; }
-        .close-game {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
-            cursor: none;
-            font-weight: 600;
-            transition: all 0.3s;
+        .chess-square.light { background: #ebecd0; color: #111; }
+        .chess-square.dark { background: #739552; color: #111; }
+        .chess-square.selected { background: #baca44 !important; }
+        .chess-square.highlight { background: rgba(244, 208, 63, 0.6) !important; }
+
+        .side-panel {
+            flex: 1;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .close-game:hover {
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.1);
+        .panel-header h3 {
+            margin-top: 0;
+            color: #00f2fe;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+        .interactive-coach {
+            background: rgba(0, 242, 254, 0.04);
+            border-left: 3px solid #00f2fe;
+            padding: 1rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: #d1d5db;
+            line-height: 1.5;
+            min-height: 80px;
+        }
+        .match-controls {
+            display: flex;
+            gap: 1rem;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #000;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
         }
 
         /* Footer */
@@ -397,17 +402,6 @@
     <!-- Rain overlay -->
     <div class="rain-container"></div>
 
-    <!-- MINI CHESS GAME MODAL -->
-    <div class="game-overlay" id="gameOverlay">
-        <div class="game-modal">
-            <h3 id="gameTitle">Coach Match</h3>
-            <div class="fun-msg">🎉 Just a mini interactive game for fun and learning!</div>
-            <div class="coach-box" id="coachMessage">Coach: Welcome! Click your Pawn (♟) to move it forward. I'm a beginner, let's learn together!</div>
-            <div class="chess-board" id="chessBoard"></div>
-            <button class="close-game" onclick="closeChessGame()">Exit Game</button>
-        </div>
-    </div>
-
     <!-- Navigation Menu -->
     <header>
         <div class="logo">♚ CHESS VAULT</div>
@@ -416,6 +410,7 @@
             <a href="#" onclick="openTab('openings', this)">OPENINGS</a>
             <a href="#" onclick="openTab('puzzles', this)">PUZZLES</a>
             <a href="#" onclick="openTab('legends', this)">LEGENDS</a>
+            <a href="#" onclick="openTab('play', this)">PLAY CHESS</a>
         </nav>
     </header>
 
@@ -556,12 +551,12 @@
         </div>
         <div class="container">
             
-            <div class="card">
+            <div class="card" onclick="toggleCard(this)">
                 <div class="card-top">
                     <h2>Magnus Carlsen</h2>
-                    <button class="play-btn" onclick="startChessGame('Magnus Carlsen')">Click to Play</button>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
                 </div>
-                <div class="legends-body">
+                <div class="card-body">
                     <p>The "Mozart of Chess" and one of the most dominant World Champions in history.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Universal style with peerless endgame technique.</li>
@@ -571,12 +566,12 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="toggleCard(this)">
                 <div class="card-top">
                     <h2>Garry Kasparov</h2>
-                    <button class="play-btn" onclick="startChessGame('Garry Kasparov')">Click to Play</button>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
                 </div>
-                <div class="legends-body">
+                <div class="card-body">
                     <p>A fierce tactical genius who held the world number one spot for 20 consecutive years.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Hyper-aggressive, highly prepared opening innovator.</li>
@@ -586,12 +581,12 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="toggleCard(this)">
                 <div class="card-top">
                     <h2>Bobby Fischer</h2>
-                    <button class="play-btn" onclick="startChessGame('Bobby Fischer')">Click to Play</button>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
                 </div>
-                <div class="legends-body">
+                <div class="card-body">
                     <p>The American prodigy who single-handedly broke the Soviet chess monopoly.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Relentless precision and deep psychological dominance.</li>
@@ -601,12 +596,12 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="toggleCard(this)">
                 <div class="card-top">
                     <h2>Mikhail Tal</h2>
-                    <button class="play-btn" onclick="startChessGame('Mikhail Tal')">Click to Play</button>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
                 </div>
-                <div class="legends-body">
+                <div class="card-body">
                     <p>Known as the "Magician from Riga," famous for mind-bending sacrifices.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Wild, chaotic, and ultra-attacking sacrifices.</li>
@@ -619,12 +614,43 @@
         </div>
     </div>
 
+    <!-- =============================== -->
+    <!-- TAB 5: PLAY CHESS (CHESS.COM STYLE) -->
+    <!-- =============================== -->
+    <div id="play" class="tab-section">
+        <div class="hero" style="padding-bottom: 1rem;">
+            <div class="aesthetic-badge">Interactive Arena</div>
+            <h1>Live Bot Practice</h1>
+            <p>Play a clean, interactive training match against a basic beginner bot that coaches your moves in real-time!</p>
+        </div>
+        <div class="arena-container">
+            <div class="chess-app-frame">
+                <div class="board-wrapper">
+                    <div class="real-chess-board" id="realChessBoard"></div>
+                </div>
+                <div class="side-panel">
+                    <div>
+                        <div class="panel-header">
+                            <h3>Coach Bot (Beginner)</h3>
+                        </div>
+                        <div class="interactive-coach" id="liveCoachMsg">
+                            Coach: Welcome to the board! You are White (♙). Click on one of your pawns to start your development.
+                        </div>
+                    </div>
+                    <div class="match-controls">
+                        <button class="action-btn" onclick="resetRealGame()">New Match</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
-        <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
+        <p>✦ DESIGNED FOR YASH HAROD ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions & Mini Chess Game -->
+    <!-- JavaScript for Interactions & Full Chess Engine -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -644,7 +670,7 @@
         }
         document.addEventListener('DOMContentLoaded', createRain);
 
-        /* --- 2. CARD TOGGLE (FOR OPENINGS & PUZZLES) --- */
+        /* --- 2. CARD TOGGLE --- */
         function toggleCard(cardElement) {
             cardElement.classList.toggle('revealed');
             const hint = cardElement.querySelector('.reveal-hint');
@@ -655,108 +681,123 @@
             }
         }
 
-        /* --- 3. MINI TEACHING CHESS GAME LOGIC --- */
-        let selectedSquare = null;
-        let boardState = [
-            ['♜', '♞', '♝', '♚'],
-            ['♟', '♟', '♟', '♟'],
-            ['', '', '', ''],
-            ['♙', '♙', '♙', '♙']
-        ]; // Simplified 4x4 micro chess for beginner coaching
-        let turn = 'player'; // player ('♙') vs computer ('♟')
+        /* --- 3. REAL CHESS.COM STYLE ENGINE --- */
+        let realSelectedSq = null;
+        let realTurn = 'player'; // 'player' (White) or 'bot' (Black)
+        let realBoard = [
+            ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
+            ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
+            ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']
+        ];
 
-        function startChessGame(legendName) {
-            document.getElementById('gameTitle').textContent = `Match vs ${legendName} (Coach)`;
-            document.getElementById('gameOverlay').style.display = 'flex';
-            resetBoard();
-            updateBoardUI();
-            setCoachMessage("Coach: Hello! You are White (♙). Click your pawn to step forward and control the center.");
-        }
-
-        function closeChessGame() {
-            document.getElementById('gameOverlay').style.display = 'none';
-        }
-
-        function resetBoard() {
-            boardState = [
-                ['♜', '♞', '♝', '♚'],
-                ['♟', '♟', '♟', '♟'],
-                ['', '', '', ''],
-                ['♙', '♙', '♙', '♙']
-            ];
-            turn = 'player';
-            selectedSquare = null;
-        }
-
-        function updateBoardUI() {
-            const boardEl = document.getElementById('chessBoard');
+        function initRealChessBoard() {
+            const boardEl = document.getElementById('realChessBoard');
             boardEl.innerHTML = '';
-            for (let r = 0; r < 4; r++) {
-                for (let c = 0; c < 4; c++) {
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
                     const sq = document.createElement('div');
-                    sq.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
-                    sq.textContent = boardState[r][c];
-                    if (selectedSquare && selectedSquare.r === r && selectedSquare.c === c) {
+                    sq.className = `chess-square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
+                    sq.textContent = realBoard[r][c];
+                    
+                    if (realSelectedSq && realSelectedSq.r === r && realSelectedSq.c === c) {
                         sq.classList.add('selected');
                     }
-                    sq.onclick = () => handleSquareClick(r, c);
+                    
+                    sq.onclick = () => handleRealSquareClick(r, c);
                     boardEl.appendChild(sq);
                 }
             }
         }
 
-        function setCoachMessage(msg) {
-            document.getElementById('coachMessage').textContent = msg;
+        function setLiveCoach(msg) {
+            document.getElementById('liveCoachMsg').textContent = `Coach: ${msg}`;
         }
 
-        function handleSquareClick(r, c) {
-            if (turn !== 'player') return;
+        function handleRealSquareClick(r, c) {
+            if (realTurn !== 'player') return;
 
-            const piece = boardState[r][c];
-            // Player pieces are uppercase/white symbols: ♙
-            if (piece === '♙') {
-                selectedSquare = { r, c };
-                updateBoardUI();
-                setCoachMessage("Coach: Great choice! Now click the empty square directly in front of your pawn to advance.");
+            const piece = realBoard[r][c];
+            // White pieces check
+            const isWhitePiece = ['♙','♖','♘','♗','♕','♔'].includes(piece);
+
+            if (isWhitePiece) {
+                realSelectedSq = { r, c };
+                initRealChessBoard();
+                setLiveCoach("Great selection! Now click a valid destination square to move your piece.");
                 return;
             }
 
-            // If a square is selected and player clicks an empty square ahead
-            if (selectedSquare && piece === '') {
-                // Check if it's a valid 1-step forward move for pawn
-                if (c === selectedSquare.c && r === selectedSquare.r - 1) {
-                    boardState[r][c] = '♙';
-                    boardState[selectedSquare.r][selectedSquare.c] = '';
-                    selectedSquare = null;
-                    updateBoardUI();
-                    turn = 'computer';
-                    setCoachMessage("Coach: Excellent move! You advanced your pawn safely. Now let me make a beginner move...");
-                    
-                    // Trigger beginner computer response after short delay
-                    setTimeout(computerTurn, 1200);
+            // If a piece is selected and clicked on an empty or valid target
+            if (realSelectedSq) {
+                const startR = realSelectedSq.r;
+                const startC = realSelectedSq.c;
+                const movingPiece = realBoard[startR][startC];
+
+                // Simple validation rules for beginner demo
+                let isValid = false;
+                if (movingPiece === '♙') {
+                    // Pawn moves forward 1 or captures diagonally 1
+                    if (c === startC && r === startR - 1 && realBoard[r][c] === '') isValid = true;
+                    if (Math.abs(c - startC) === 1 && r === startR - 1 && realBoard[r][c] !== '') isValid = true;
                 } else {
-                    setCoachMessage("Coach: Oops! Pawns move straight forward one square at a time. Try selecting your pawn and moving it straight ahead.");
+                    // Allow generic movement for demo simplicity
+                    if (r !== startR || c !== startC) isValid = true;
+                }
+
+                if (isValid) {
+                    realBoard[r][c] = movingPiece;
+                    realBoard[startR][startC] = '';
+                    realSelectedSq = null;
+                    initRealChessBoard();
+                    realTurn = 'bot';
+                    setLiveCoach("Solid move! Let me think of a beginner response...");
+
+                    setTimeout(botMove, 1300);
+                } else {
+                    setLiveCoach("That move isn't legal for this piece. Try again!");
                 }
             }
         }
 
-        function computerTurn() {
-            // Find a beginner computer pawn ('♟') to move forward if possible
+        function botMove() {
+            // Simple bot logic: finds a black pawn or piece and pushes forward
             let moved = false;
-            for (let r = 3; r >= 0; r--) {
-                for (let c = 0; c < 4; c++) {
-                    if (boardState[r][c] === '♟' && r < 3 && boardState[r+1][c] === '') {
-                        boardState[r+1][c] = '♟';
-                        boardState[r][c] = '';
+            for (let r = 7; r >= 0; r--) {
+                for (let c = 0; c < 8; c++) {
+                    if (realBoard[r][c] === '♟' && r < 7 && realBoard[r+1][c] === '') {
+                        realBoard[r+1][c] = '♟';
+                        realBoard[r][c] = '';
                         moved = true;
                         break;
                     }
                 }
                 if (moved) break;
             }
-            turn = 'player';
-            updateBoardUI();
-            setCoachMessage("Coach: I moved my beginner pawn forward! Your turn again. Keep controlling the center squares.");
+            realTurn = 'player';
+            initRealChessBoard();
+            setLiveCoach("I pushed my pawn forward! Your turn to strike back.");
+        }
+
+        function resetRealGame() {
+            realBoard = [
+                ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
+                ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
+                ['', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', ''],
+                ['', '', '', '', '', '', '', ''],
+                ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
+                ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']
+            ];
+            realTurn = 'player';
+            realSelectedSq = null;
+            initRealChessBoard();
+            setLiveCoach("Match reset! You are White (♙). Make your opening move.");
         }
 
         /* --- 4. SMOOTH TAB SWITCHING --- */
@@ -772,6 +813,9 @@
                 tabs.forEach(tab => tab.style.display = 'none');
                 const targetTab = document.getElementById(tabId);
                 targetTab.style.display = 'block';
+                if(tabId === 'play') {
+                    initRealChessBoard();
+                }
                 requestAnimationFrame(() => {
                     targetTab.classList.add('active');
                 });
