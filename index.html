@@ -11,6 +11,31 @@
             margin: 0;
             background-color: #f4f4f9;
             color: #333;
+            overflow-x: hidden; /* Prevents horizontal scrolling from rain */
+        }
+
+        /* Rain Particle System */
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Ensures you can still click things behind the rain */
+            z-index: 9999; /* Keeps rain on top of everything */
+        }
+        .drop {
+            position: absolute;
+            top: -50px;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(49, 130, 206, 0.5));
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
         }
 
         /* Navigation Bar */
@@ -101,6 +126,9 @@
 </head>
 <body>
 
+    <!-- Rain overlay container -->
+    <div class="rain-container"></div>
+
     <!-- Navigation Menu -->
     <header>
         <div class="logo">♚ Chess Vault</div>
@@ -178,5 +206,31 @@
         <p>✦ Designed for the love of the game ✦</p>
     </footer>
 
+    <!-- JavaScript for Rain Effect -->
+    <script>
+        function createRain() {
+            const rainContainer = document.querySelector('.rain-container');
+            const dropCount = 100; // You can change this number for heavier/lighter rain
+            
+            for (let i = 0; i < dropCount; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('drop');
+                
+                // Randomize position, speed, and delay for a natural look
+                const leftPosition = Math.random() * 100;
+                const fallDuration = Math.random() * 1 + 0.5; // Between 0.5s and 1.5s
+                const startDelay = Math.random() * 2; // Up to 2s delay before falling
+                
+                drop.style.left = leftPosition + 'vw';
+                drop.style.animationDuration = fallDuration + 's';
+                drop.style.animationDelay = startDelay + 's';
+                
+                rainContainer.appendChild(drop);
+            }
+        }
+
+        // Run the rain function when the page loads
+        document.addEventListener('DOMContentLoaded', createRain);
+    </script>
 </body>
 </html>
