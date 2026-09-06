@@ -174,7 +174,7 @@
             line-height: 1.6;
         }
 
-        /* Glassmorphism Cards Grid */
+        /* --- INTERACTIVE CLICK-TO-REVEAL CARDS --- */
         .container {
             max-width: 1100px;
             margin: 2rem auto;
@@ -192,37 +192,77 @@
             border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, border 0.6s ease;
+            cursor: none;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, border 0.6s ease, background 0.6s ease;
         }
         .card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: 0 20px 40px rgba(0, 242, 254, 0.08);
             border: 1px solid rgba(0, 242, 254, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
         }
         .card h2 {
             margin-top: 0;
             color: #ffffff;
             font-size: 1.4rem;
             font-weight: 600;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0;
             letter-spacing: 0.5px;
         }
-        .card p {
+        .reveal-hint {
+            font-size: 0.75rem;
+            color: #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        /* Hidden Content Body */
+        .card-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, margin-top 0.5s ease;
+        }
+        .card.revealed .card-body {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+        }
+        .card.revealed .reveal-hint {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .card-body p {
             color: #bbbbbb;
             font-size: 0.95rem;
             font-weight: 300;
             margin-bottom: 1.5rem;
         }
-        .card ul {
+        .card-body ul {
             line-height: 2;
             padding-left: 1.2rem;
             color: #aaaaaa;
             font-weight: 300;
             font-size: 0.95rem;
+            margin: 0;
         }
-        .card ul strong {
+        .card-body ul strong {
             color: #ffffff;
             font-weight: 600;
         }
@@ -288,45 +328,67 @@
             <h1>The Battle Lines</h1>
         </div>
         <div class="container">
-            <div class="card">
-                <h2>The Black Pieces: Counter-Attack</h2>
-                <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
-                <ul>
-                    <li><strong>The Sicilian Defense:</strong> Fighting for the center aggressively.</li>
-                    <li><strong>The King's Indian Defense:</strong> Solid structure for middle-game strikes.</li>
-                    <li><strong>Responses to d4:</strong> Keeping the position dynamic.</li>
-                </ul>
+            
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>The Black Pieces: Counter-Attack</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
+                    <ul>
+                        <li><strong>The Sicilian Defense:</strong> Fighting for the center aggressively.</li>
+                        <li><strong>The King's Indian Defense:</strong> Solid structure for middle-game strikes.</li>
+                        <li><strong>Responses to d4:</strong> Keeping the position dynamic.</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Advanced Defenses</h2>
-                <p>Expanding your repertoire to counter aggressive opening plays.</p>
-                <ul>
-                    <li><strong>The Caro-Kann Defense:</strong> Highly solid, focusing on an unbreakable pawn structure.</li>
-                    <li><strong>The French Defense:</strong> A sharp counter-attack that invites overextension.</li>
-                    <li><strong>The Scandinavian Defense:</strong> Striking the center immediately.</li>
-                </ul>
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>Advanced Defenses</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>Expanding your repertoire to counter aggressive opening plays.</p>
+                    <ul>
+                        <li><strong>The Caro-Kann Defense:</strong> Highly solid, focusing on an unbreakable pawn structure.</li>
+                        <li><strong>The French Defense:</strong> A sharp counter-attack that invites overextension.</li>
+                        <li><strong>The Scandinavian Defense:</strong> Striking the center immediately.</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Classic Openings for White</h2>
-                <p>Foundational strategies for taking control from the very first move.</p>
-                <ul>
-                    <li><strong>The Italian Game:</strong> A classic, aggressive opening aiming directly at the f7 square.</li>
-                    <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for central control.</li>
-                    <li><strong>The Ruy Lopez:</strong> An ancient opening applying long-term positional pressure.</li>
-                </ul>
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>Classic Openings for White</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>Foundational strategies for taking control from the very first move.</p>
+                    <ul>
+                        <li><strong>The Italian Game:</strong> A classic, aggressive opening aiming directly at the f7 square.</li>
+                        <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for central control.</li>
+                        <li><strong>The Ruy Lopez:</strong> An ancient opening applying long-term positional pressure.</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Aggressive Gambits & Traps</h2>
-                <p>Catching opponents off guard with sharp, tactical lines.</p>
-                <ul>
-                    <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to hunt the King.</li>
-                    <li><strong>The Stafford Gambit:</strong> A tricky line that can overwhelm the unprepared.</li>
-                    <li><strong>The Légal Trap:</strong> A beautiful sequence involving a shocking Queen sacrifice.</li>
-                </ul>
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>Aggressive Gambits & Traps</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>Catching opponents off guard with sharp, tactical lines.</p>
+                    <ul>
+                        <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to hunt the King.</li>
+                        <li><strong>The Stafford Gambit:</strong> A tricky line that can overwhelm the unprepared.</li>
+                        <li><strong>The Légal Trap:</strong> A beautiful sequence involving a shocking Queen sacrifice.</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -339,25 +401,37 @@
             <h1>Calculate & Conquer</h1>
         </div>
         <div class="container">
-            <div class="card">
-                <h2>Tactical Patterns</h2>
-                <p>Sharpening your ability to spot hidden winning patterns on the board.</p>
-                <ul>
-                    <li><strong>Pins & Skewers:</strong> Trapping high-value pieces behind weaker ones.</li>
-                    <li><strong>Forks:</strong> Using a single piece (often a Knight) to attack two targets simultaneously.</li>
-                    <li><strong>Discovered Attacks:</strong> Moving a piece to unveil a devastating strike from behind.</li>
-                </ul>
+            
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>Tactical Patterns</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>Sharpening your ability to spot hidden winning patterns on the board.</p>
+                    <ul>
+                        <li><strong>Pins & Skewers:</strong> Trapping high-value pieces behind weaker ones.</li>
+                        <li><strong>Forks:</strong> Using a single piece (often a Knight) to attack two targets simultaneously.</li>
+                        <li><strong>Discovered Attacks:</strong> Moving a piece to unveil a devastating strike from behind.</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Endgame Calculations</h2>
-                <p>When the board clears, absolute mathematical precision is everything.</p>
-                <ul>
-                    <li><strong>The Rule of the Square:</strong> Calculating if your King can catch a runaway pawn.</li>
-                    <li><strong>Opposition:</strong> Forcing the enemy King to step aside.</li>
-                    <li><strong>Lucena Position:</strong> The essential bridge-building technique for Rook endgames.</li>
-                </ul>
+            <div class="card" onclick="toggleCard(this)">
+                <div class="card-top">
+                    <h2>Endgame Calculations</h2>
+                    <span class="reveal-hint">Click to Reveal ▾</span>
+                </div>
+                <div class="card-body">
+                    <p>When the board clears, absolute mathematical precision is everything.</p>
+                    <ul>
+                        <li><strong>The Rule of the Square:</strong> Calculating if your King can catch a runaway pawn.</li>
+                        <li><strong>Opposition:</strong> Forcing the enemy King to step aside.</li>
+                        <li><strong>Lucena Position:</strong> The essential bridge-building technique for Rook endgames.</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -366,7 +440,7 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Buttery Smooth Performance -->
+    <!-- JavaScript for Interactions & Smooth Animations -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -386,7 +460,18 @@
         }
         document.addEventListener('DOMContentLoaded', createRain);
 
-        /* --- 2. SMOOTH TAB SWITCHING --- */
+        /* --- 2. CARD TOGGLE (CLICK TO REVEAL) --- */
+        function toggleCard(cardElement) {
+            cardElement.classList.toggle('revealed');
+            const hint = cardElement.querySelector('.reveal-hint');
+            if (cardElement.classList.contains('revealed')) {
+                hint.textContent = 'Click to Hide ▴';
+            } else {
+                hint.textContent = 'Click to Reveal ▾';
+            }
+        }
+
+        /* --- 3. SMOOTH TAB SWITCHING --- */
         function openTab(tabId, element) {
             const tabs = document.querySelectorAll('.tab-section');
             const links = document.querySelectorAll('nav a');
@@ -407,7 +492,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 3. ZERO-LAG LERP CURSOR & FLUID PARTICLES --- */
+        /* --- 4. ZERO-LAG LERP CURSOR & FLUID PARTICLES --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
         
@@ -423,7 +508,6 @@
             
             cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
 
-            // Throttle trail particle creation for absolute performance
             const now = Date.now();
             if (now - lastTrailTime > 50) {
                 createTrailParticle(mouseX, mouseY);
@@ -431,9 +515,7 @@
             }
         });
 
-        // High-FPS Lerp Loop for buttery-smooth floating cursor outline
         function renderCursor() {
-            // Factor 0.08 creates that slow, heavy, premium floating glide effect
             outlineX += (mouseX - outlineX) * 0.08;
             outlineY += (mouseY - outlineY) * 0.08;
             
@@ -466,7 +548,6 @@
             animation.onfinish = () => particle.remove();
         }
 
-        // Slow, elegant click ripple burst
         window.addEventListener('click', function(e) {
             createClickBurst(e.clientX, e.clientY);
             
@@ -505,7 +586,6 @@
             }
         }
 
-        // Hover expansions
         const interactiveElements = document.querySelectorAll('a, .card');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
