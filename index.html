@@ -174,7 +174,7 @@
             line-height: 1.6;
         }
 
-        /* --- INTERACTIVE CLICK-TO-REVEAL CARDS --- */
+        /* --- CARDS & GENERAL CONTAINERS --- */
         .container {
             max-width: 1100px;
             margin: 2rem auto;
@@ -215,6 +215,8 @@
             margin-bottom: 0;
             letter-spacing: 0.5px;
         }
+        
+        /* Standard Card Body (For Openings/Puzzles) */
         .reveal-hint {
             font-size: 0.75rem;
             color: #00f2fe;
@@ -225,10 +227,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             white-space: nowrap;
-            transition: all 0.3s ease;
         }
-        
-        /* Hidden Content Body */
         .card-body {
             max-height: 0;
             opacity: 0;
@@ -248,23 +247,123 @@
             color: #ffffff;
         }
 
-        .card-body p {
-            color: #bbbbbb;
-            font-size: 0.95rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-        }
-        .card-body ul {
-            line-height: 2;
-            padding-left: 1.2rem;
-            color: #aaaaaa;
-            font-weight: 300;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-        .card-body ul strong {
-            color: #ffffff;
+        /* --- LEGENDS SECTION SPECIFIC BUTTON & LAYOUT --- */
+        .play-btn {
+            font-size: 0.75rem;
+            color: #000;
+            background: #00f2fe;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             font-weight: 600;
+            cursor: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+            white-space: nowrap;
+        }
+        .play-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+        .legends-body {
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+        }
+
+        /* --- MINI CHESS GAME STYLING --- */
+        .game-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInModal 0.4s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .game-modal {
+            background: #0a0a0a;
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        .game-modal h3 {
+            margin-top: 0;
+            color: #00f2fe;
+            letter-spacing: 1px;
+        }
+        .fun-msg {
+            font-size: 0.85rem;
+            color: #ff9900;
+            background: rgba(255, 153, 0, 0.1);
+            border: 1px solid rgba(255, 153, 0, 0.3);
+            padding: 0.4rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .coach-box {
+            font-size: 0.9rem;
+            color: #ffffff;
+            background: rgba(0, 242, 254, 0.05);
+            border-left: 3px solid #00f2fe;
+            padding: 0.6rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+            min-height: 45px;
+        }
+        .chess-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 1.5rem auto;
+            border: 2px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: none;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .square.light { background: #e0e0e0; color: #000; }
+        .square.dark { background: #4a5568; color: #fff; }
+        .square.selected { background: #00f2fe !important; }
+        .close-game {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .close-game:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Footer */
@@ -297,6 +396,17 @@
 
     <!-- Rain overlay -->
     <div class="rain-container"></div>
+
+    <!-- MINI CHESS GAME MODAL -->
+    <div class="game-overlay" id="gameOverlay">
+        <div class="game-modal">
+            <h3 id="gameTitle">Coach Match</h3>
+            <div class="fun-msg">🎉 Just a mini interactive game for fun and learning!</div>
+            <div class="coach-box" id="coachMessage">Coach: Welcome! Click your Pawn (♟) to move it forward. I'm a beginner, let's learn together!</div>
+            <div class="chess-board" id="chessBoard"></div>
+            <button class="close-game" onclick="closeChessGame()">Exit Game</button>
+        </div>
+    </div>
 
     <!-- Navigation Menu -->
     <header>
@@ -437,7 +547,7 @@
     </div>
 
     <!-- =============================== -->
-    <!-- TAB 4: LEGENDS (NEW OPTION)     -->
+    <!-- TAB 4: LEGENDS                  -->
     <!-- =============================== -->
     <div id="legends" class="tab-section">
         <div class="hero" style="padding-bottom: 1rem;">
@@ -446,12 +556,12 @@
         </div>
         <div class="container">
             
-            <div class="card" onclick="toggleCard(this)">
+            <div class="card">
                 <div class="card-top">
                     <h2>Magnus Carlsen</h2>
-                    <span class="reveal-hint">Click to Reveal ▾</span>
+                    <button class="play-btn" onclick="startChessGame('Magnus Carlsen')">Click to Play</button>
                 </div>
-                <div class="card-body">
+                <div class="legends-body">
                     <p>The "Mozart of Chess" and one of the most dominant World Champions in history.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Universal style with peerless endgame technique.</li>
@@ -461,12 +571,12 @@
                 </div>
             </div>
 
-            <div class="card" onclick="toggleCard(this)">
+            <div class="card">
                 <div class="card-top">
                     <h2>Garry Kasparov</h2>
-                    <span class="reveal-hint">Click to Reveal ▾</span>
+                    <button class="play-btn" onclick="startChessGame('Garry Kasparov')">Click to Play</button>
                 </div>
-                <div class="card-body">
+                <div class="legends-body">
                     <p>A fierce tactical genius who held the world number one spot for 20 consecutive years.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Hyper-aggressive, highly prepared opening innovator.</li>
@@ -476,12 +586,12 @@
                 </div>
             </div>
 
-            <div class="card" onclick="toggleCard(this)">
+            <div class="card">
                 <div class="card-top">
                     <h2>Bobby Fischer</h2>
-                    <span class="reveal-hint">Click to Reveal ▾</span>
+                    <button class="play-btn" onclick="startChessGame('Bobby Fischer')">Click to Play</button>
                 </div>
-                <div class="card-body">
+                <div class="legends-body">
                     <p>The American prodigy who single-handedly broke the Soviet chess monopoly.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Relentless precision and deep psychological dominance.</li>
@@ -491,12 +601,12 @@
                 </div>
             </div>
 
-            <div class="card" onclick="toggleCard(this)">
+            <div class="card">
                 <div class="card-top">
                     <h2>Mikhail Tal</h2>
-                    <span class="reveal-hint">Click to Reveal ▾</span>
+                    <button class="play-btn" onclick="startChessGame('Mikhail Tal')">Click to Play</button>
                 </div>
-                <div class="card-body">
+                <div class="legends-body">
                     <p>Known as the "Magician from Riga," famous for mind-bending sacrifices.</p>
                     <ul>
                         <li><strong>Playing Style:</strong> Wild, chaotic, and ultra-attacking sacrifices.</li>
@@ -514,7 +624,7 @@
         <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions & Smooth Animations -->
+    <!-- JavaScript for Interactions & Mini Chess Game -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -534,7 +644,7 @@
         }
         document.addEventListener('DOMContentLoaded', createRain);
 
-        /* --- 2. CARD TOGGLE (CLICK TO REVEAL) --- */
+        /* --- 2. CARD TOGGLE (FOR OPENINGS & PUZZLES) --- */
         function toggleCard(cardElement) {
             cardElement.classList.toggle('revealed');
             const hint = cardElement.querySelector('.reveal-hint');
@@ -545,7 +655,111 @@
             }
         }
 
-        /* --- 3. SMOOTH TAB SWITCHING --- */
+        /* --- 3. MINI TEACHING CHESS GAME LOGIC --- */
+        let selectedSquare = null;
+        let boardState = [
+            ['♜', '♞', '♝', '♚'],
+            ['♟', '♟', '♟', '♟'],
+            ['', '', '', ''],
+            ['♙', '♙', '♙', '♙']
+        ]; // Simplified 4x4 micro chess for beginner coaching
+        let turn = 'player'; // player ('♙') vs computer ('♟')
+
+        function startChessGame(legendName) {
+            document.getElementById('gameTitle').textContent = `Match vs ${legendName} (Coach)`;
+            document.getElementById('gameOverlay').style.display = 'flex';
+            resetBoard();
+            updateBoardUI();
+            setCoachMessage("Coach: Hello! You are White (♙). Click your pawn to step forward and control the center.");
+        }
+
+        function closeChessGame() {
+            document.getElementById('gameOverlay').style.display = 'none';
+        }
+
+        function resetBoard() {
+            boardState = [
+                ['♜', '♞', '♝', '♚'],
+                ['♟', '♟', '♟', '♟'],
+                ['', '', '', ''],
+                ['♙', '♙', '♙', '♙']
+            ];
+            turn = 'player';
+            selectedSquare = null;
+        }
+
+        function updateBoardUI() {
+            const boardEl = document.getElementById('chessBoard');
+            boardEl.innerHTML = '';
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const sq = document.createElement('div');
+                    sq.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
+                    sq.textContent = boardState[r][c];
+                    if (selectedSquare && selectedSquare.r === r && selectedSquare.c === c) {
+                        sq.classList.add('selected');
+                    }
+                    sq.onclick = () => handleSquareClick(r, c);
+                    boardEl.appendChild(sq);
+                }
+            }
+        }
+
+        function setCoachMessage(msg) {
+            document.getElementById('coachMessage').textContent = msg;
+        }
+
+        function handleSquareClick(r, c) {
+            if (turn !== 'player') return;
+
+            const piece = boardState[r][c];
+            // Player pieces are uppercase/white symbols: ♙
+            if (piece === '♙') {
+                selectedSquare = { r, c };
+                updateBoardUI();
+                setCoachMessage("Coach: Great choice! Now click the empty square directly in front of your pawn to advance.");
+                return;
+            }
+
+            // If a square is selected and player clicks an empty square ahead
+            if (selectedSquare && piece === '') {
+                // Check if it's a valid 1-step forward move for pawn
+                if (c === selectedSquare.c && r === selectedSquare.r - 1) {
+                    boardState[r][c] = '♙';
+                    boardState[selectedSquare.r][selectedSquare.c] = '';
+                    selectedSquare = null;
+                    updateBoardUI();
+                    turn = 'computer';
+                    setCoachMessage("Coach: Excellent move! You advanced your pawn safely. Now let me make a beginner move...");
+                    
+                    // Trigger beginner computer response after short delay
+                    setTimeout(computerTurn, 1200);
+                } else {
+                    setCoachMessage("Coach: Oops! Pawns move straight forward one square at a time. Try selecting your pawn and moving it straight ahead.");
+                }
+            }
+        }
+
+        function computerTurn() {
+            // Find a beginner computer pawn ('♟') to move forward if possible
+            let moved = false;
+            for (let r = 3; r >= 0; r--) {
+                for (let c = 0; c < 4; c++) {
+                    if (boardState[r][c] === '♟' && r < 3 && boardState[r+1][c] === '') {
+                        boardState[r+1][c] = '♟';
+                        boardState[r][c] = '';
+                        moved = true;
+                        break;
+                    }
+                }
+                if (moved) break;
+            }
+            turn = 'player';
+            updateBoardUI();
+            setCoachMessage("Coach: I moved my beginner pawn forward! Your turn again. Keep controlling the center squares.");
+        }
+
+        /* --- 4. SMOOTH TAB SWITCHING --- */
         function openTab(tabId, element) {
             const tabs = document.querySelectorAll('.tab-section');
             const links = document.querySelectorAll('nav a');
@@ -566,7 +780,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* --- 4. ZERO-LAG LERP CURSOR & FLUID PARTICLES --- */
+        /* --- 5. ZERO-LAG LERP CURSOR & FLUID PARTICLES --- */
         const cursorDot = document.getElementById('cursor-dot');
         const cursorOutline = document.getElementById('cursor-outline');
         
@@ -660,7 +874,7 @@
             }
         }
 
-        const interactiveElements = document.querySelectorAll('a, .card');
+        const interactiveElements = document.querySelectorAll('a, .card, button');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursorOutline.style.width = '55px';
