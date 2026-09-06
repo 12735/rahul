@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Strategy Guide</title>
+    
+    <!-- Importing a clean, modern aesthetic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         /* General Site Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            overflow-x: hidden; /* Prevents horizontal scrolling from rain */
+            background-color: #000000; /* Pure black background for max aesthetic */
+            color: #ffffff; /* Crisp white text */
+            overflow-x: hidden;
         }
 
         /* Rain Particle System */
@@ -21,15 +25,15 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            pointer-events: none; /* Ensures you can still click things behind the rain */
-            z-index: 9999; /* Keeps rain on top of everything */
+            pointer-events: none;
+            z-index: 0; 
         }
         .drop {
             position: absolute;
             top: -50px;
-            width: 2px;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, rgba(49, 130, 206, 0.5));
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.4));
             animation: fall linear infinite;
         }
         @keyframes fall {
@@ -38,88 +42,138 @@
             }
         }
 
-        /* Navigation Bar */
+        /* Navigation Bar (Glass effect) */
         header {
-            background-color: #1a1a1a;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 1.2rem 2rem;
+            padding: 1.2rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         nav a {
-            color: #d1d5db;
+            color: #a0a0a0;
             text-decoration: none;
-            margin-left: 1.5rem;
-            transition: color 0.3s ease;
+            margin-left: 2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
         }
         nav a:hover {
-            color: white;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
         /* Hero / Welcome Section */
         .hero {
-            background-color: #2d3748;
-            color: white;
             text-align: center;
-            padding: 4rem 1rem;
-            border-bottom: 5px solid #4a5568;
+            padding: 6rem 1rem 4rem 1rem;
+            position: relative;
+            z-index: 1;
         }
         .hero h1 {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 0.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ffffff, #555555);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .hero p {
             font-size: 1.2rem;
-            color: #e2e8f0;
+            color: #a0a0a0;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* Strategy Cards Grid */
+        /* Glassmorphism Strategy Cards Grid */
         .container {
-            max-width: 1000px;
-            margin: 3rem auto;
-            padding: 0 1rem;
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
         }
         .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-top: 4px solid #3182ce;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
         }
-        .card.dark-theme {
-            border-top-color: #1a1a1a;
-            background-color: #fafafa;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .card h2 {
             margin-top: 0;
-            color: #2d3748;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .card p {
+            color: #cccccc;
+            font-size: 0.95rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
         }
         .card ul {
-            line-height: 1.8;
+            line-height: 2;
             padding-left: 1.2rem;
+            color: #bbbbbb;
+            font-weight: 300;
+            font-size: 0.95rem;
+        }
+        .card ul strong {
+            color: #ffffff;
+            font-weight: 600;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 2rem;
-            color: #718096;
-            margin-top: 2rem;
+            padding: 3rem;
+            color: #555555;
+            margin-top: 4rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            z-index: 1;
         }
         
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -131,11 +185,11 @@
 
     <!-- Navigation Menu -->
     <header>
-        <div class="logo">♚ Chess Vault</div>
+        <div class="logo">♚ CHESS VAULT</div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Openings</a>
-            <a href="#">Puzzles</a>
+            <a href="#">HOME</a>
+            <a href="#">OPENINGS</a>
+            <a href="#">PUZZLES</a>
         </nav>
     </header>
 
@@ -148,7 +202,7 @@
     <!-- Content Sections -->
     <div class="container">
         
-        <div class="card dark-theme">
+        <div class="card">
             <h2>The Black Pieces: Counter-Attack</h2>
             <p>Building a bulletproof defense and turning the tables on White's opening moves.</p>
             <ul>
@@ -158,13 +212,13 @@
             </ul>
         </div>
 
-        <div class="card dark-theme">
+        <div class="card">
             <h2>Advanced Defenses</h2>
             <p>Expanding your repertoire to counter aggressive opening plays.</p>
             <ul>
                 <li><strong>The Caro-Kann Defense:</strong> Highly solid, focusing on an unbreakable pawn structure.</li>
                 <li><strong>The French Defense:</strong> A sharp counter-attack that invites overextension.</li>
-                <li><strong>The Scandinavian Defense:</strong> Striking the center immediately and bringing the Queen out early.</li>
+                <li><strong>The Scandinavian Defense:</strong> Striking the center immediately.</li>
                 <li><strong>The Nimzo-Indian Defense:</strong> Rapid development to pin early threats.</li>
             </ul>
         </div>
@@ -174,8 +228,8 @@
             <p>Foundational strategies for taking control from the very first move.</p>
             <ul>
                 <li><strong>The Italian Game:</strong> A classic, aggressive opening aiming directly at the f7 square.</li>
-                <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for overwhelming central control.</li>
-                <li><strong>The Ruy Lopez:</strong> An ancient and highly strategic opening applying long-term pressure.</li>
+                <li><strong>The Queen's Gambit:</strong> Temporarily sacrificing a wing pawn for central control.</li>
+                <li><strong>The Ruy Lopez:</strong> An ancient opening applying long-term positional pressure.</li>
             </ul>
         </div>
 
@@ -183,19 +237,9 @@
             <h2>Aggressive Gambits & Traps</h2>
             <p>Catching opponents off guard with sharp, tactical lines.</p>
             <ul>
-                <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to relentlessly hunt the King.</li>
-                <li><strong>The Stafford Gambit:</strong> A tricky, trap-heavy line that can overwhelm the unprepared.</li>
-                <li><strong>The Légal Trap:</strong> A beautiful mating net sequence involving a shocking Queen sacrifice.</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>Tactical Vision</h2>
-            <p>Sharpening your ability to spot winning patterns on the board.</p>
-            <ul>
-                <li><strong>Pins & Skewers:</strong> Trapping high-value pieces.</li>
-                <li><strong>Forks:</strong> Attacking two targets simultaneously.</li>
-                <li><strong>Endgame Calculations:</strong> Pawn promotion races.</li>
+                <li><strong>The Fried Liver Attack:</strong> Sacrificing a Knight to hunt the King.</li>
+                <li><strong>The Stafford Gambit:</strong> A tricky line that can overwhelm the unprepared.</li>
+                <li><strong>The Légal Trap:</strong> A beautiful sequence involving a shocking Queen sacrifice.</li>
             </ul>
         </div>
 
@@ -203,23 +247,22 @@
 
     <!-- Footer -->
     <footer>
-        <p>✦ Designed for the love of the game ✦</p>
+        <p>✦ DESIGNED FOR THE LOVE OF THE GAME ✦</p>
     </footer>
 
     <!-- JavaScript for Rain Effect -->
     <script>
         function createRain() {
             const rainContainer = document.querySelector('.rain-container');
-            const dropCount = 100; // You can change this number for heavier/lighter rain
+            const dropCount = 75; 
             
             for (let i = 0; i < dropCount; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('drop');
                 
-                // Randomize position, speed, and delay for a natural look
                 const leftPosition = Math.random() * 100;
-                const fallDuration = Math.random() * 1 + 0.5; // Between 0.5s and 1.5s
-                const startDelay = Math.random() * 2; // Up to 2s delay before falling
+                const fallDuration = Math.random() * 1.5 + 0.8; 
+                const startDelay = Math.random() * 2; 
                 
                 drop.style.left = leftPosition + 'vw';
                 drop.style.animationDuration = fallDuration + 's';
@@ -229,7 +272,6 @@
             }
         }
 
-        // Run the rain function when the page loads
         document.addEventListener('DOMContentLoaded', createRain);
     </script>
 </body>
