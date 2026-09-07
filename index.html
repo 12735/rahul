@@ -633,7 +633,7 @@
                             <h3>Coach Bot (Beginner)</h3>
                         </div>
                         <div class="interactive-coach" id="liveCoachMsg">
-                            Coach: Welcome to the board! You are White (♙). Click on one of your pawns to start your development.
+                            Coach: Welcome to the board! You are White (♙). Click on one of your pieces to see valid options, then click a target square.
                         </div>
                     </div>
                     <div class="match-controls">
@@ -649,7 +649,7 @@
         <p>✦ DESIGNED FOR MRBADSHAH ✦</p>
     </footer>
 
-    <!-- JavaScript for Interactions & Full Chess Engine -->
+    <!-- JavaScript for Interactions & Fixed Chess Engine -->
     <script>
         /* --- 1. RAIN EFFECT --- */
         function createRain() {
@@ -680,9 +680,9 @@
             }
         }
 
-        /* --- 3. REAL CHESS.COM STYLE ENGINE --- */
+        /* --- 3. ROBUST CHESS ENGINE & COACH BOT --- */
         let realSelectedSq = null;
-        let realTurn = 'player'; 
+        let realTurn = 'player'; // 'player' (White) or 'bot' (Black)
         let realBoard = [
             ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
             ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
@@ -717,16 +717,97 @@
             document.getElementById('liveCoachMsg').textContent = `Coach: ${msg}`;
         }
 
+        function isWhitePiece(p) {
+            return ['♙','♖','♘','♗','♕','♔'].includes(p);
+        }
+
+        function isBlackPiece(p) {
+            return ['♟','♜','♞','♝','♛','♚'].includes(p);
+        }
+
+        function isValidMove(startR, startC, targetR, targetC, piece) {
+            if (startR === targetR && startC === targetC) return false;
+            const targetPiece = realBoard[targetR][targetC];
+            
+            // Cannot capture your own pieces
+            if (isWhitePiece(piece) && isWhitePiece(targetPiece)) return false;
+            if (isBlackPiece(piece) && isBlackPiece(targetPiece)) return false;
+
+            const rowDiff = targetR - startR;
+            const colDiff = targetC - startC;
+
+            switch(piece) {
+                case '♙': // White Pawn
+                    if (colDiff === 0 && rowDiff === -1 && targetPiece === '') return true;
+                    // Initial two-step
+                    if (colDiff === 0 && startR === 6 && rowDiff === -2 && targetPiece === '' && realBoard[5][startC] === '') return true;
+                    // Captures
+                    if (Math.abs(colDiff) === 1 && rowDiff === -1 && isBlackPiece(targetPiece)) return true;
+                    return false;
+
+                case '♟': // Black Pawn
+                    if (colDiff === 0 && rowDiff === 1 && targetPiece === '') return true;
+                    if (colDiff === 0 && startR === 1 && rowDiff === 2 && targetPiece === '' && realBoard[2][startC] === '') return true;
+                    if (Math.abs(colDiff) === 1 && rowDiff === 1 && isWhitePiece(targetPiece)) return true;
+                    return false;
+
+                case '♘':
+                case '♞': // Knight
+                    return (Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 1) || (Math.abs(rowDiff) === 1 && Math.abs(colDiff) === 2);
+
+                case '♗':
+                case '♝': // Bishop
+                    if (Math.abs(rowDiff) === Math.abs(colDiff)) {
+                        return isPathClear(startR, startC, targetR, targetC);
+                    }
+                    return false;
+
+                case '♖':
+                case '♜': // Rook
+                    if (rowDiff === 0 || colDiff === 0) {
+                        return isPathClear(startR, startC, targetR, targetC);
+                    }
+                    return false;
+
+                case '♕':
+                case '♛': // Queen
+                    if (rowDiff === 0 || colDiff === 0 || Math.abs(rowDiff) === Math.abs(colDiff)) {
+                        return isPathClear(startR, startC, targetR, targetC);
+                    }
+                    return false;
+
+                case '♔':
+                case '♚': // King
+                    return Math.abs(rowDiff) <= 1 && Math.abs(colDiff) <= 1;
+
+                default:
+                    return false;
+            }
+        }
+
+        function isPathClear(sR, sC, tR, tC) {
+            const rStep = tR > sR ? 1 : tR < sR ? -1 : 0;
+            const cStep = tC > sC ? 1 : tC < sC ? -1 : 0;
+            let currR = sR + rStep;
+            let currC = sC + cStep;
+
+            while (currR !== tR || currC !== tC) {
+                if (realBoard[currR][currC] !== '') return false;
+                currR += rStep;
+                currC += cStep;
+            }
+            return true;
+        }
+
         function handleRealSquareClick(r, c) {
             if (realTurn !== 'player') return;
 
             const piece = realBoard[r][c];
-            const isWhitePiece = ['♙','♖','♘','♗','♕','♔'].includes(piece);
 
-            if (isWhitePiece) {
+            if (isWhitePiece(piece)) {
                 realSelectedSq = { r, c };
                 initRealChessBoard();
-                setLiveCoach("Great selection! Now click a valid destination square to move your piece.");
+                setLiveCoach("Piece selected! Now click any valid target square to move.");
                 return;
             }
 
@@ -735,45 +816,51 @@
                 const startC = realSelectedSq.c;
                 const movingPiece = realBoard[startR][startC];
 
-                let isValid = false;
-                if (movingPiece === '♙') {
-                    if (c === startC && r === startR - 1 && realBoard[r][c] === '') isValid = true;
-                    if (Math.abs(c - startC) === 1 && r === startR - 1 && realBoard[r][c] !== '') isValid = true;
-                } else {
-                    if (r !== startR || c !== startC) isValid = true;
-                }
-
-                if (isValid) {
+                if (isValidMove(startR, startC, r, c, movingPiece)) {
                     realBoard[r][c] = movingPiece;
                     realBoard[startR][startC] = '';
                     realSelectedSq = null;
                     initRealChessBoard();
                     realTurn = 'bot';
-                    setLiveCoach("Solid move! Let me think of a beginner response...");
+                    setLiveCoach("Nice move! Analyzing bot response...");
 
-                    setTimeout(botMove, 1300);
+                    setTimeout(botMove, 1000);
                 } else {
-                    setLiveCoach("That move isn't legal for this piece. Try again!");
+                    setLiveCoach("Invalid move for that piece! Check standard movement rules and try again.");
                 }
             }
         }
 
         function botMove() {
-            let moved = false;
-            for (let r = 7; r >= 0; r--) {
+            // Find all valid moves for black pieces and execute a random beginner move
+            let possibleMoves = [];
+            for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    if (realBoard[r][c] === '♟' && r < 7 && realBoard[r+1][c] === '') {
-                        realBoard[r+1][c] = '♟';
-                        realBoard[r][c] = '';
-                        moved = true;
-                        break;
+                    if (isBlackPiece(realBoard[r][c])) {
+                        // Scan potential targets
+                        for (let tr = 0; tr < 8; tr++) {
+                            for (let tc = 0; tc < 8; tc++) {
+                                if (isValidMove(r, c, tr, tc, realBoard[r][c])) {
+                                    possibleMoves.push({fromR: r, fromC: c, toR: tr, toC: tc});
+                                }
+                            }
+                        }
                     }
                 }
-                if (moved) break;
             }
+
+            if (possibleMoves.length > 0) {
+                // Pick a random legal move for the beginner bot
+                const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                realBoard[move.toR][move.toC] = realBoard[move.fromR][move.fromC];
+                realBoard[move.fromR][move.fromC] = '';
+                setLiveCoach("Bot made its move. Your turn to attack!");
+            } else {
+                setLiveCoach("Bot has no legal moves remaining!");
+            }
+
             realTurn = 'player';
             initRealChessBoard();
-            setLiveCoach("I pushed my pawn forward! Your turn to strike back.");
         }
 
         function resetRealGame() {
